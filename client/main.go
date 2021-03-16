@@ -1,11 +1,13 @@
 package main
 
 import (
-    "time"
+	"bufio"
 	"context"
 	pb "github.com/kawaemon/learn-grpc/types"
 	"google.golang.org/grpc"
+	"io"
 	"log"
+	"os"
 )
 
 func main() {
@@ -19,17 +21,61 @@ func main() {
 
 	client := pb.NewChatClient(connection)
 
-	name := "hoge"
+	ctx := context.Background()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-
-	defer cancel()
-
-	response, err := client.SayHello(ctx, &pb.HelloRequest{Name: name})
+	stream, err := client.Chat(ctx)
 
 	if err != nil {
-		log.Panicf("failed to send request: %v", err)
+		log.Panicf("failed to create stream: %v", err)
 	}
 
-	log.Printf("Response: %s", response.GetMessage())
+	log.Println("now chat is connected")
+
+	stopChan := make(chan struct{})
+	stdinChan := make(chan string)
+	recvChan := make(chan string)
+
+	go (func() {
+		for {
+			reader := bufio.NewReader(os.Stdin)
+			text, _ := reader.ReadString('\n')
+			stdinChan <- text
+		}
+	})()
+
+	go (func() {
+		for {
+			msg, e := stream.Recv()
+
+			if e == io.EOF {
+				stopChan <- struct{}{}
+				return
+			}
+
+			if e != nil {
+				log.Fatalf("failed to receive message: %v", e)
+				return
+			}
+
+			recvChan <- msg.GetMessage()
+		}
+	})()
+
+	running := true
+	for running {
+		select {
+		case <-stopChan:
+			running = false
+
+		case msg := <-recvChan:
+			log.Printf("server said: %s\n", msg)
+
+		case input := <-stdinChan:
+			err := stream.Send(&pb.ChatMessage{Message: input})
+
+			if err != nil {
+				log.Fatalf("failed to send to server")
+			}
+		}
+	}
 }

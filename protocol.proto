@@ -3,6 +3,8 @@ option go_package = ".;types";
 
 service Chat {
     rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+    rpc Chat (stream ChatMessage) returns (stream ChatMessage) {}
 }
 
 message HelloRequest {
@@ -12,5 +14,9 @@ message HelloRequest {
 }
 
 message HelloReply {
+    string message = 1;
+}
+
+message ChatMessage {
     string message = 1;
 }
