@@ -85,7 +85,7 @@ func main() {
 		}
 	})()
 
-	listener, err := net.Listen("tcp", ":8000")
+	listener, err := net.Listen("tcp", ":4000")
 
 	if err != nil {
 		log.Panicf("failed to listen: %v", err)

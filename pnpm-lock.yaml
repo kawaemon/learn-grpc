@@ -1,0 +1,25 @@
+dependencies:
+  '@improbable-eng/grpc-web': 0.14.0_google-protobuf@3.15.6
+  google-protobuf: 3.15.6
+lockfileVersion: 5.2
+packages:
+  /@improbable-eng/grpc-web/0.14.0_google-protobuf@3.15.6:
+    dependencies:
+      browser-headers: 0.4.1
+      google-protobuf: 3.15.6
+    dev: false
+    peerDependencies:
+      google-protobuf: ^3.14.0
+    resolution:
+      integrity: sha512-ag1PTMWpBZKGi6GrEcZ4lkU5Qag23Xjo10BmnK9qyx4TMmSVcWmQ3rECirfQzm2uogrM9n1M6xfOpFsJP62ivA==
+  /browser-headers/0.4.1:
+    dev: false
+    resolution:
+      integrity: sha512-CA9hsySZVo9371qEHjHZtYxV2cFtVj5Wj/ZHi8ooEsrtm4vOnl9Y9HmyYWk9q+05d7K3rdoAE0j3MVEFVvtQtg==
+  /google-protobuf/3.15.6:
+    dev: false
+    resolution:
+      integrity: sha512-p65NyhIZFHFUxbIPOm6cygg2rCjK+2uDCxruOG3RaWKM9R4rBGX0STmlJoSOhoyAG8Fha7U8FP4pQomAV1JXsA==
+specifiers:
+  '@improbable-eng/grpc-web': ^0.14.0
+  google-protobuf: ^3.15.6
