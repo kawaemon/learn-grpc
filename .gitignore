@@ -1,2 +1,7 @@
-types/*.go
-server.a
+/types/*.go
+/server.a
+/client.a
+/web/node_modules
+/web/src/grpc/*.ts
+/web/src/grpc/*.js
+/certs/

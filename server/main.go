@@ -27,7 +27,6 @@ func (s *Server) SayHello(ctx context.Context, request *pb.HelloRequest) (*pb.He
 	return &pb.HelloReply{Message: "Hello " + name}, nil
 }
 
-
 func (s *Server) Chat(stream pb.Chat_ChatServer) error {
 	log.Println("Client connected.")
 
@@ -56,13 +55,13 @@ func (s *Server) Chat(stream pb.Chat_ChatServer) error {
 	running := true
 	for running {
 		select {
-		case <- stopChan:
+		case <-stopChan:
 			running = false
 
-		case msg := <- recvChan:
+		case msg := <-recvChan:
 			log.Printf("server said: %s\n", msg)
 
-		case input := <- stdinChan:
+		case input := <-stdinChan:
 			err := stream.Send(&pb.ChatMessage{Message: input})
 
 			if err != nil {
@@ -85,7 +84,7 @@ func main() {
 		}
 	})()
 
-	listener, err := net.Listen("tcp", ":8000")
+	listener, err := net.Listen("tcp", ":4000")
 
 	if err != nil {
 		log.Panicf("failed to listen: %v", err)
